@@ -1,0 +1,34 @@
+const asyncHandler = require("express-async-handler");
+const User = require("../models/userModel");
+
+async function getUserList() {
+  const users = await User.find();
+  return users;
+}
+
+async function checkUser(email) {
+  const userExists = await User.findOne({ email });
+  return userExists;
+}
+
+async function createUser(name, email) {
+  const userCreation = await User.create({
+    name,
+    email,
+  });
+  return userCreation;
+}
+
+async function removeUser(userId) {
+  const userDeleted = await User.findByIdAndDelete(userId);
+  return userDeleted;
+}
+
+async function modifyUser(userId, userData) {
+  const userChanged = await User.findByIdAndUpdate(userId, userData, {
+    new: true,
+  });
+  return userChanged;
+}
+
+module.exports = { getUserList, checkUser, createUser, removeUser, modifyUser };
