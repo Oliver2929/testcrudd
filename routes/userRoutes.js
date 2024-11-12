@@ -1,26 +1,25 @@
 const express = require("express");
 const router = express.Router();
 const {
-  listUsers,
-  addUser,
-  deleteUser,
-  updateUser,
+  allUsers,
+  register,
+  login,
+  getMe,
+  update,
+  remove,
 } = require("../controllers/userController");
+const jwtAuthenticate = require("../middleware/jwtAuthenticate");
+const authorizedRoles = require("../middleware/authorizedRoles");
 
-//GET
+router.get("/", allUsers);
 
-router.get("/", listUsers);
+// Public routes
+router.post("/register", register);
+router.post("/login", login);
 
-//POST
-
-router.post("/register", addUser);
-
-// Delete
-
-router.delete("/delete/:id", deleteUser);
-
-//Patch
-
-router.patch("/update/:id", updateUser);
+// Protected routes
+router.get("/me", jwtAuthenticate, getMe);
+router.put("/me", jwtAuthenticate, update);
+router.delete("/me", jwtAuthenticate, remove);
 
 module.exports = router;
